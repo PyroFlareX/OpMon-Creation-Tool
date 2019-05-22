@@ -10,21 +10,21 @@
 
 struct Stats
 {
-	int HP;
-	int Atk;
-	int AtkSpe;
-	int Def;
-	int DefSpe;
-	int Speed;
+	std::string HP;
+	std::string Atk;
+	std::string AtkSpe;
+	std::string Def;
+	std::string DefSpe;
+	std::string Speed;
 };
 
 
-void createOpMon(int captureRate = 120, int curve = 1000000, float weight = 5.0);
+void createOpMon(std::string name, Stats opmon, int captureRate, int curve, float weight = 5.0);
 
 int main()
 {
-	if (_mkdir("../OpMonOut") != 0)
-	{
+	_mkdir("../OpMonOut");
+
 		uint64_t time = std::time(nullptr);
 		std::cout << "Creating Directories...\nInitializing...\nCOMPLETE!\n"; //For Funzies
 		while ((time + 3) >= (std::time(nullptr)))
@@ -60,6 +60,16 @@ int main()
 			std::cout << "\nPlease Enter the OpMon's Speed\n";
 			std::cin >> OpMon.Speed;
 
+			try {
+				//Passing Struct of OpMon stats, etc. // Creating OpMon!!!!
+				//captureRate = 120		curve = 1000000		weight = 5.0
+				createOpMon(name, OpMon, 120, 1000000, 6.8);
+			}
+			catch (...)
+			{
+				std::cerr << "Error Creating OpMon; sorry 'bout dat\n";
+			}
+
 			//Asking if user wants to continue
 			std::cout << "\n\nContinue? (Y/n)";
 			std::string response;
@@ -69,17 +79,19 @@ int main()
 				break;
 			}
 		}
-
-	}
-	else
-	{
-		std::cout << "Cannot create Directory\n";
-	}
-
 	return 0;
 }
 
-void createOpMon(int captureRate, int curve, float weight)
+void createOpMon(std::string name, Stats opmon, int captureRate, int curve, float weight)
 {
-
+	std::ofstream out;
+	out.open("../OpMonOut/opmon" + name + ".opmn");
+	out << "{\n\t\"HP\":" + opmon.HP;
+	out << ",\n\t\"atk\":" + opmon.Atk;
+	out << ",\n\t\"atkSpe\":" + opmon.AtkSpe;
+	out << ",\n\t\"captureRate\":" + captureRate;
+	out << ",\n\t\"curve\":" + curve;
+	out << ",\n\t\"def\":" + opmon.Def;
+	out << ",\n\t\"defSpe\":" + opmon.DefSpe;
+	out.close();
 }
