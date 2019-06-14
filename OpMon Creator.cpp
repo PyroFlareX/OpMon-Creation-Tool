@@ -66,15 +66,15 @@ int main()
 			std::cout << "\nPlease Enter the OpMon's Speed\n";
 			std::cin >> OpMon.Speed;
 
-			try {
+			//try {
 				//Passing Struct of OpMon stats, etc. // Creating OpMon!!!!
 				//captureRate = 120		curve = 1000000		weight = 5.0	height = 5.0
 				createOpMon(name, OpMon, 120, 1000000, 6.8, 5.0, 93, 49);
-			}
-			catch (...)
-			{
-				std::cerr << "Error Creating OpMon; sorry 'bout dat\n Log: \n";
-			}
+			//}
+			//catch (...)
+			//{
+			//	std::cerr << "Error Creating OpMon; sorry 'bout dat\n Log: \n";
+			//}
 
 			//Asking if user wants to continue
 			std::cout << "\n\nContinue? (Y/n) ";
@@ -90,37 +90,34 @@ int main()
 
 void createOpMon(std::string name, Stats opmon, int captureRate, int curve, float weight, float height, int expGiven, int OpDexNum)
 {
-	std::fstream out;
+	std::ofstream out;
 	//Did this to attempt to solve a file opening runtime error
 	std::string fileName = "../OpMonOut/opmon";
 	fileName.append(name);
 	fileName.append(".json");
 
-	out.open(fileName);
-	out.clear();
+	out.open(fileName, std::ios::out | std::ios::trunc);
 	if(out.is_open())
 	{
-		out << "{\n\t\"HP\":" + opmon.HP;
-		out << ",\n\t\"atk\":" + opmon.Atk;
-		out << ",\n\t\"atkSpe\":" + opmon.AtkSpe;
-		out << ",\n\t\"def\":" + opmon.Def;
-		out << ",\n\t\"defSpe\":" + opmon.DefSpe;
-		out << ",\n\t\"spe\":" + opmon.Speed;
+		out << "{\n\t\"HP\":" << opmon.HP
+			<< ",\n\t\"atk\":" << opmon.Atk
+			<< ",\n\t\"atkSpe\":" << opmon.AtkSpe
+			<< ",\n\t\"def\":" << opmon.Def
+			<< ",\n\t\"defSpe\":" << opmon.DefSpe
+			<< ",\n\t\"spe\":" << opmon.Speed
 
-		out << ",\n\t\"weight\":" + char(weight);
-		out << ",\n\t\"height\":" + char(height);
+			<< ",\n\t\"weight\":" << weight
+			<< ",\n\t\"height\":" << height
 
-
-		out << ",\n\t\"captureRate\":" + captureRate;
-		out << ",\n\t\"curve\":" + curve;
-		out << ",\n\t\"expGiven\":" + expGiven;
-		out << ",\n\t\"opDex\":" + OpDexNum;
+			<< ",\n\t\"captureRate\":" << captureRate
+			<< ",\n\t\"curve\":" << curve
+			<< ",\n\t\"expGiven\":" << expGiven
+			<< ",\n\t\"opDex\":" << OpDexNum
+			<< "}";
 	}
 	else
 	{
 		/* code */
-		std::cout << "Could not create OpMon file.\nLog: In Function createOpMon, file open failure\n";
+		std::cout << "Could not create OpMon file.\nLog : In Function createOpMon, file open failure\n";
 	}
-	out.close();
-	return;
 }
