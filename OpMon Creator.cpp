@@ -3,10 +3,16 @@
 
 #include <iostream>
 #include <fstream>
-#include <io.h>
-#include <direct.h>
 #include <string>
 #include <ctime>
+#include <filesystem>
+
+#if __cplusplus < 201703L // If the version of C++ is less than 17
+    // It was still in the experimental:: namespace
+    namespace fs = std::experimental::filesystem;
+#else
+    namespace fs = std::filesystem;
+#endif
 
 struct Stats
 {
@@ -19,11 +25,11 @@ struct Stats
 };
 
 
-void createOpMon(std::string name, Stats opmon, int captureRate, int curve, float weight = 5.0);
+void createOpMon(std::string name, Stats opmon, int captureRate, int curve, float weight, float height, int expGiven, int OpDexNum);
 
 int main()
 {
-	_mkdir("../OpMonOut");
+	fs::create_directory("../OpMonOut");
 
 		uint64_t time = std::time(nullptr);
 		std::cout << "Creating Directories...\nInitializing...\nCOMPLETE!\n"; //For Funzies
@@ -34,8 +40,8 @@ int main()
 		{
 			Stats OpMon;
 			std::string name;
-			///Starting the OpMon Creation
-			std::cout << "\aHello There!, This is the OpMon creation tool by PyroFlareX\n";
+			///Starting the OpMon Creation*/
+			std::cout << "Hello There!, This is the OpMon creation tool by PyroFlareX\n";
 			std::cout << "\tMake sure you received this executable from the proper sources :P!\n\n";
 
 			std::cout << "Please Enter the OpMon's Name:   \n";
@@ -62,16 +68,16 @@ int main()
 
 			try {
 				//Passing Struct of OpMon stats, etc. // Creating OpMon!!!!
-				//captureRate = 120		curve = 1000000		weight = 5.0
-				createOpMon(name, OpMon, 120, 1000000, 6.8);
+				//captureRate = 120		curve = 1000000		weight = 5.0	height = 5.0
+				//createOpMon(name, OpMon, 120, 1000000, 6.8, 5.0, 93, 49);
 			}
 			catch (...)
 			{
-				std::cerr << "Error Creating OpMon; sorry 'bout dat\n";
+				//std::cerr << "Error Creating OpMon; sorry 'bout dat\n Log: \n";
 			}
 
 			//Asking if user wants to continue
-			std::cout << "\n\nContinue? (Y/n)";
+			std::cout << "\n\nContinue? (Y/n) ";
 			std::string response;
 			std::cin >> response;
 			if (!(response == "Y" || response == "y"))
@@ -82,16 +88,34 @@ int main()
 	return 0;
 }
 
-void createOpMon(std::string name, Stats opmon, int captureRate, int curve, float weight)
+void createOpMon(std::string name, Stats opmon, int captureRate, int curve, float weight, float height, int expGiven, int OpDexNum)
 {
-	std::ofstream out;
-	out.open("../OpMonOut/opmon" + name + ".opmn");
-	out << "{\n\t\"HP\":" + opmon.HP;
-	out << ",\n\t\"atk\":" + opmon.Atk;
-	out << ",\n\t\"atkSpe\":" + opmon.AtkSpe;
-	out << ",\n\t\"captureRate\":" + captureRate;
-	out << ",\n\t\"curve\":" + curve;
-	out << ",\n\t\"def\":" + opmon.Def;
-	out << ",\n\t\"defSpe\":" + opmon.DefSpe;
-	out.close();
+	std::fstream out;
+	out.open("../OpMonOut/opmon" + name + ".json");
+	out.clear();
+	if(out.is_open())
+	{
+		/*out << "{\n\t\"HP\":" + opmon.HP;
+		out << ",\n\t\"atk\":" + opmon.Atk;
+		out << ",\n\t\"atkSpe\":" + opmon.AtkSpe;
+		out << ",\n\t\"def\":" + opmon.Def;
+		out << ",\n\t\"defSpe\":" + opmon.DefSpe;
+		out << ",\n\t\"spe\":" + opmon.Speed;
+
+		out << ",\n\t\"weight\":" + char(weight);
+		out << ",\n\t\"height\":" + char(height);
+
+
+		out << ",\n\t\"captureRate\":" + captureRate;
+		out << ",\n\t\"curve\":" + curve;
+		out << ",\n\t\"expGiven\":" + expGiven;
+		out << ",\n\t\"opDex\":" + OpDexNum;*/
+
+		out.close();
+	}
+	else
+	{
+		/* code */
+		std::cout << "Could not create OpMon file.\nLog: In Function createOpMon, file open failure\n";
+	}
 }
