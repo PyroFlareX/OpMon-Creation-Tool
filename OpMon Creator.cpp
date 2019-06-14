@@ -69,11 +69,11 @@ int main()
 			try {
 				//Passing Struct of OpMon stats, etc. // Creating OpMon!!!!
 				//captureRate = 120		curve = 1000000		weight = 5.0	height = 5.0
-				//createOpMon(name, OpMon, 120, 1000000, 6.8, 5.0, 93, 49);
+				createOpMon(name, OpMon, 120, 1000000, 6.8, 5.0, 93, 49);
 			}
 			catch (...)
 			{
-				//std::cerr << "Error Creating OpMon; sorry 'bout dat\n Log: \n";
+				std::cerr << "Error Creating OpMon; sorry 'bout dat\n Log: \n";
 			}
 
 			//Asking if user wants to continue
@@ -91,11 +91,16 @@ int main()
 void createOpMon(std::string name, Stats opmon, int captureRate, int curve, float weight, float height, int expGiven, int OpDexNum)
 {
 	std::fstream out;
-	out.open("../OpMonOut/opmon" + name + ".json");
+	//Did this to attempt to solve a file opening runtime error
+	std::string fileName = "../OpMonOut/opmon";
+	fileName.append(name);
+	fileName.append(".json");
+
+	out.open(fileName);
 	out.clear();
 	if(out.is_open())
 	{
-		/*out << "{\n\t\"HP\":" + opmon.HP;
+		out << "{\n\t\"HP\":" + opmon.HP;
 		out << ",\n\t\"atk\":" + opmon.Atk;
 		out << ",\n\t\"atkSpe\":" + opmon.AtkSpe;
 		out << ",\n\t\"def\":" + opmon.Def;
@@ -109,13 +114,13 @@ void createOpMon(std::string name, Stats opmon, int captureRate, int curve, floa
 		out << ",\n\t\"captureRate\":" + captureRate;
 		out << ",\n\t\"curve\":" + curve;
 		out << ",\n\t\"expGiven\":" + expGiven;
-		out << ",\n\t\"opDex\":" + OpDexNum;*/
-
-		out.close();
+		out << ",\n\t\"opDex\":" + OpDexNum;
 	}
 	else
 	{
 		/* code */
 		std::cout << "Could not create OpMon file.\nLog: In Function createOpMon, file open failure\n";
 	}
+	out.close();
+	return;
 }
