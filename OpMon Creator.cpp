@@ -25,7 +25,7 @@ struct Stats
 };
 
 
-void createOpMon(std::string& name, Stats opmon, int captureRate, int curve, float weight, float height, int expGiven, int OpDexNum);
+void createOpMon(std::string& name, Stats& opmon, int captureRate, int curve, float weight, float height, int expGiven, int OpDexNum);
 
 int main()
 {
@@ -88,7 +88,7 @@ int main()
 	return 0;
 }
 
-void createOpMon(std::string& name, Stats opmon, int captureRate, int curve, float weight, float height, int expGiven, int OpDexNum)
+void createOpMon(std::string& name, Stats& opmon, int captureRate, int curve, float weight, float height, int expGiven, int OpDexNum)
 {
 	std::ofstream out;
 	//Did this to attempt to solve a file opening runtime error
